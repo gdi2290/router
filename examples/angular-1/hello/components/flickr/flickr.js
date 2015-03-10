@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('example.flickr', []).
-  controller('FlickrController', ['$http', FlickrController]);
+  constant('flickrURL', 'http://api.flickr.com/services/feeds/photos_public.gne?tags=angularjs&tagmode=any&format=json').
+  controller('FlickrController', ['$http', 'flickrURL', FlickrController]);
 
-var URL = 'http://api.flickr.com/services/feeds/photos_public.gne?tags=angularjs&tagmode=any&format=json';
 
-function FlickrController($http) {
+function FlickrController($http, flickrURL) {
+  this.flickrURL = flickrURL;
   this.heading = 'Flickr';
   this.images = [];
   this.http = $http;
@@ -21,7 +22,7 @@ FlickrController.prototype.activate = function() {
     self.images = result.items;
   };
 
-  this.http.jsonp(URL);
+  this.http.jsonp(this.flickrURL);
 };
 
 FlickrController.prototype.canDeactivate = function() {
